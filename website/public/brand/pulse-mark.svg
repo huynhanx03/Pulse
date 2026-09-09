@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="pulse-mark-title">
+  <title id="pulse-mark-title">Pulse Transform Aperture</title>
+  <path fill="#285AE6" d="M5 5H11L14 10L11 14V18L14 22L11 27H5Z"/>
+  <path fill="#285AE6" d="M27 8a3 3 0 0 0-3-3H21L18 10L21 14V18L18 22L21 27H24a3 3 0 0 0 3-3Z"/>
+</svg>

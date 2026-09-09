@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 32" role="img" aria-labelledby="pulse-wordmark-title">
+  <title id="pulse-wordmark-title">Pulse</title>
+  <g fill="#285AE6">
+    <path d="M5 5H11L14 10L11 14V18L14 22L11 27H5Z"/>
+    <path d="M27 8a3 3 0 0 0-3-3H21L18 10L21 14V18L18 22L21 27H24a3 3 0 0 0 3-3Z"/>
+    <text x="38" y="22.5" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="20" font-weight="700" letter-spacing="-0.8">Pulse</text>
+  </g>
+</svg>

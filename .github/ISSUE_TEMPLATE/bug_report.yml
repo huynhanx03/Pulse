@@ -1,0 +1,84 @@
+name: Bug report
+description: Report a reproducible problem in the frontend simulation.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Pulse is a frontend-only simulation: do not include real credentials, private endpoints, or production payloads. Report security issues through the private link below instead.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and pull requests.
+          required: true
+        - label: I reproduced this with synthetic data in Simulation Mode.
+          required: true
+        - label: This is not a security vulnerability or secret-leak report.
+          required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Workspace and navigation
+        - HTTP/HTTPS workbench
+        - gRPC workbench
+        - Lifecycle and variables
+        - Authentication
+        - Data Studio
+        - Test Lab
+        - History and settings
+        - Accessibility or responsive layout
+        - Build, tests, or documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: List the smallest reliable sequence, starting from a fresh local workspace when possible.
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Revision
+      description: Commit SHA, branch, or pull request used for the reproduction.
+      placeholder: main at abc1234
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and operating system
+      placeholder: Chromium 140 on macOS 16
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Synthetic evidence
+      description: Add screenshots, a trace, or redacted logs. Remove all secrets and private data.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context

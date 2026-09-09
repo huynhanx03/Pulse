@@ -1,0 +1,60 @@
+name: Feature request
+description: Propose an improvement within the frontend simulation boundary.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Start with the user problem. The current scope excludes backend implementation, real network/load execution, Docker, and backend release automation.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues, pull requests, and the roadmap.
+          required: true
+        - label: I can describe this without assuming an unapproved backend endpoint or protocol.
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Who experiences the problem, in what workflow, and what is the impact?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe observable behavior rather than an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Include alternatives and tradeoffs if known.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope fit
+      options:
+        - Frontend mock behavior
+        - UI, accessibility, responsive design, or localization
+        - Architecture, tests, security, or documentation
+        - Future-phase idea for roadmap discussion
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Examples or evidence
+      description: Add synthetic examples, sketches, or references without private data.
+  - type: checkboxes
+    id: quality
+    attributes:
+      label: Quality considerations
+      options:
+        - label: I considered keyboard and screen-reader behavior.
+        - label: I considered English/Vietnamese and light/dark/system themes.
+        - label: I considered secret handling, persistence, and imported untrusted content.

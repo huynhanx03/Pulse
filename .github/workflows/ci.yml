@@ -1,0 +1,126 @@
+name: Website quality
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Check formatting
+        run: npm run format:check
+      - name: Check types
+        run: npm run type-check
+      - name: Lint
+        run: npm run lint
+      - name: Run unit and component tests with coverage guard
+        run: npm run test:coverage
+      - name: Check architecture
+        run: npm run check:architecture
+      - name: Build frontend
+        run: npm run build
+      - name: Check bundle budgets
+        run: npm run check:bundle
+      - name: Audit production and development dependencies
+        run: npm audit --audit-level=high
+
+  browser:
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run browser journeys
+        run: npm run test:browser
+      - name: Run accessibility suite
+        run: npm run test:a11y
+      - name: Upload Playwright diagnostics
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: playwright-diagnostics
+          path: |
+            website/playwright-report
+            website/test-results
+          if-no-files-found: ignore
+
+  dependency-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Review changed dependencies for known vulnerabilities
+        uses: actions/dependency-review-action@3c4e3dcb1aa7874d2c16be7d79418e9b7efd6261 # v4.8.2
+        with:
+          fail-on-severity: high
+
+  final-report:
+    if: always()
+    needs: [quality, browser, dependency-review]
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Publish final PR report
+        env:
+          QUALITY: ${{ needs.quality.result }}
+          BROWSER: ${{ needs.browser.result }}
+          SECURITY: ${{ needs.dependency-review.result }}
+        run: |
+          {
+            echo '## Final PR report'
+            echo
+            echo '| Gate | Result |'
+            echo '| --- | --- |'
+            echo "| Source quality, tests, build and npm audit | ${QUALITY} |"
+            echo "| Chromium journeys and accessibility | ${BROWSER} |"
+            echo "| Dependency CVE review | ${SECURITY} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Enforce all gates
+        env:
+          QUALITY: ${{ needs.quality.result }}
+          BROWSER: ${{ needs.browser.result }}
+          SECURITY: ${{ needs.dependency-review.result }}
+        run: |
+          test "$QUALITY" = success
+          test "$BROWSER" = success
+          test "$SECURITY" = success
