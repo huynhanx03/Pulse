@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/huynhanx03/Pulse/security/advisories/new
+    about: Report vulnerabilities and secret exposure privately; do not open a public issue.
+  - name: Contribution guide
+    url: https://github.com/huynhanx03/Pulse/blob/main/CONTRIBUTING.md
+    about: Review setup, scope, quality gates, and pull-request expectations.
