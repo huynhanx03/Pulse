@@ -246,9 +246,8 @@ const CompareButton = ({
     icon={<GitCompareArrows className="size-4" />}
     disabled={count !== 2}
     onClick={onClick}
-    aria-label={`${label} ${count}/2`}
   >
-    {label}
+    {label}{' '}
     <span
       className={cn(
         'rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none',
