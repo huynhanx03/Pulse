@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/w/ws-core/request/req-login')
-  await page.getByRole('button', { name: 'Ngôn ngữ' }).click()
+  await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
 })
 
 test('saves and closes a dirty tab without reopening it or losing its edits', async ({ page }) => {

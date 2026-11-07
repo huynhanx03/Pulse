@@ -143,7 +143,7 @@ const GrpcMethodPicker = ({
       <DropdownMenu.Trigger asChild>
         <button
           type="button"
-          aria-label={label}
+          aria-label={`${label}: ${selected.service}/${selected.name}`}
           className="flex h-9 min-w-[260px] flex-1 items-center gap-2 rounded-md border border-transparent bg-surface-sunken px-3 text-left transition-colors hover:border-border-strong hover:bg-surface-raised focus:outline-none focus:ring-1 focus:ring-accent/70 data-[state=open]:border-accent"
         >
           <RadioTower className="size-4 shrink-0 text-info" />

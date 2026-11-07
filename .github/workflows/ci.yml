@@ -23,7 +23,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm
@@ -44,9 +44,6 @@ jobs:
         run: npm run build
       - name: Check bundle budgets
         run: npm run check:bundle
-      - name: Audit production and development dependencies
-        run: npm audit --audit-level=high
-
   browser:
     needs: quality
     runs-on: ubuntu-latest
@@ -60,7 +57,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm
@@ -83,20 +80,31 @@ jobs:
             website/test-results
           if-no-files-found: ignore
 
-  dependency-review:
+  dependency-audit:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    permissions:
-      contents: read
+    defaults:
+      run:
+        working-directory: website
     steps:
-      - name: Review changed dependencies for known vulnerabilities
-        uses: actions/dependency-review-action@3c4e3dcb1aa7874d2c16be7d79418e9b7efd6261 # v4.8.2
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fail-on-severity: high
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Audit production and development dependencies
+        run: npm audit --audit-level=high
 
   final-report:
     if: always()
-    needs: [quality, browser, dependency-review]
+    needs: [quality, browser, dependency-audit]
     runs-on: ubuntu-latest
     permissions: {}
     steps:
@@ -104,22 +112,22 @@ jobs:
         env:
           QUALITY: ${{ needs.quality.result }}
           BROWSER: ${{ needs.browser.result }}
-          SECURITY: ${{ needs.dependency-review.result }}
+          SECURITY: ${{ needs.dependency-audit.result }}
         run: |
           {
             echo '## Final PR report'
             echo
             echo '| Gate | Result |'
             echo '| --- | --- |'
-            echo "| Source quality, tests, build and npm audit | ${QUALITY} |"
+            echo "| Source quality, tests and build | ${QUALITY} |"
             echo "| Chromium journeys and accessibility | ${BROWSER} |"
-            echo "| Dependency CVE review | ${SECURITY} |"
+            echo "| High-severity npm dependency audit | ${SECURITY} |"
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Enforce all gates
         env:
           QUALITY: ${{ needs.quality.result }}
           BROWSER: ${{ needs.browser.result }}
-          SECURITY: ${{ needs.dependency-review.result }}
+          SECURITY: ${{ needs.dependency-audit.result }}
         run: |
           test "$QUALITY" = success
           test "$BROWSER" = success
