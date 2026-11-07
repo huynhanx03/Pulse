@@ -7,7 +7,7 @@ const chooseOption = async (page: Page, select: Locator, name: string) => {
 
 const openEnglishWorkbench = async (page: Page) => {
   await page.goto('/w/ws-core/request/req-login')
-  await page.getByRole('button', { name: 'Ngôn ngữ', exact: true }).click()
+  await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
   await expect(page.getByRole('button', { name: 'Send request', exact: true })).toBeVisible()
 }
 

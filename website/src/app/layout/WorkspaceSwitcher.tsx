@@ -32,7 +32,7 @@ export const WorkspaceSwitcher = () => {
       <DropdownMenu.Trigger asChild>
         <button
           type="button"
-          aria-label={t('nav.workspaceSwitcher')}
+          aria-label={`${t('nav.workspaceSwitcher')}: ${data.workspace.name}`}
           className="hidden h-8 max-w-56 items-center gap-2 rounded-md border border-transparent px-2 text-left text-xs font-medium text-ink-muted transition-colors hover:border-border hover:bg-surface-hover hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:flex"
         >
           <span className="flex size-4 shrink-0 items-center justify-center rounded bg-accent-soft text-accent">

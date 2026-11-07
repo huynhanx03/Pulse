@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/w/ws-core/request/req-login')
-  await page.getByRole('button', { name: 'Ngôn ngữ', exact: true }).click()
+  await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
 })
 
 test('previews cURL imports, rejects bad syntax, and applies a valid request', async ({ page }) => {

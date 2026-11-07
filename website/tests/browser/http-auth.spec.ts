@@ -17,7 +17,7 @@ test('captures Login tokens while keeping secret values redacted', async ({ page
 })
 
 test('switches language and theme without reloading', async ({ page }) => {
-  await page.getByRole('button', { name: 'Ngôn ngữ' }).click()
+  await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
   await expect(page.getByRole('button', { name: 'Send request' })).toBeVisible()
 
   const root = page.locator('html')

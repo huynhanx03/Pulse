@@ -27,7 +27,7 @@ export const EnvironmentSwitcher = () => {
       <DropdownMenu.Trigger asChild>
         <button
           type="button"
-          aria-label={t('nav.activeEnvironment')}
+          aria-label={`${t('nav.activeEnvironment')}: ${environment.name}`}
           className="flex h-9 max-w-40 items-center gap-1.5 rounded-md border border-transparent px-2 text-xs font-semibold text-ink-muted transition-colors hover:border-border hover:bg-surface-hover hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent max-md:h-11 max-md:max-w-32"
         >
           <EnvironmentMarker active className="size-2" />

@@ -42,7 +42,7 @@ for (const width of [375, 768, 1024, 1440, 1920]) {
     }) => {
       await page.setViewportSize({ width, height: 900 })
       await page.goto('/w/ws-core/automations')
-      if (locale === 'en') await page.getByRole('button', { name: 'Ngôn ngữ', exact: true }).click()
+      if (locale === 'en') await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
       const heading = page.getByRole('main').getByRole('heading', { level: 1 })
       await expect(heading).toBeVisible()
       const layout = await heading.evaluate((title) => {

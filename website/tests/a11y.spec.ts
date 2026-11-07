@@ -38,8 +38,7 @@ for (const locale of ['vi', 'en'] as const) {
           .click()
         if (theme === 'dark')
           await page.getByRole('banner').getByRole('button', { name: 'Sáng', exact: true }).click()
-        if (locale === 'en')
-          await page.getByRole('button', { name: 'Ngôn ngữ', exact: true }).click()
+        if (locale === 'en') await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
         await expect(page.locator('html')).toHaveAttribute('data-theme', theme)
         await settleFiniteAnimations(page)
         const results = await new AxeBuilder({ page }).include('#root').analyze()
@@ -77,7 +76,7 @@ for (const locale of ['vi', 'en'] as const) {
 for (const theme of ['light', 'dark'] as const) {
   test(`interactive HTTP response, actions and dialog: ${theme}`, async ({ page }) => {
     await page.goto('/w/ws-core/request/req-login')
-    await page.getByRole('button', { name: 'Ngôn ngữ', exact: true }).click()
+    await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
     await page.getByRole('banner').getByRole('button', { name: 'System', exact: true }).click()
     if (theme === 'dark')
       await page.getByRole('banner').getByRole('button', { name: 'Light', exact: true }).click()
@@ -106,7 +105,7 @@ for (const theme of ['light', 'dark'] as const) {
 
   test(`interactive gRPC stream: ${theme}`, async ({ page }) => {
     await page.goto('/w/ws-core/grpc/req-grpc-profile')
-    await page.getByRole('button', { name: 'Ngôn ngữ', exact: true }).click()
+    await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
     await page.getByRole('banner').getByRole('button', { name: 'System', exact: true }).click()
     if (theme === 'dark')
       await page.getByRole('banner').getByRole('button', { name: 'Light', exact: true }).click()

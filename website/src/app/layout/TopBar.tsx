@@ -76,7 +76,7 @@ export const TopBar = () => {
           type="button"
           onClick={() => setLocale(preferences.locale === 'vi' ? 'en' : 'vi')}
           className="flex h-9 min-w-9 items-center justify-center rounded-md px-2 text-[11px] font-bold uppercase text-ink-muted hover:bg-surface-hover hover:text-ink max-md:h-11"
-          aria-label={t('settings.language')}
+          aria-label={`${t('settings.language')}: ${preferences.locale}`}
         >
           {preferences.locale}
         </button>

@@ -14,7 +14,7 @@ test('keeps core HTTP actions and mobile navigation reachable', async ({ page })
 
 test('keeps data profile titles and actions readable on mobile', async ({ page }) => {
   await page.goto('/w/ws-core/datasets')
-  await page.getByRole('button', { name: 'Ngôn ngữ', exact: true }).click()
+  await page.getByRole('button', { name: /Ngôn ngữ/ }).click()
   const heading = page.getByRole('heading', { name: 'Data Studio', exact: true })
   const action = page.getByRole('button', { name: 'New profile', exact: true })
   const geometry = await heading.evaluate((title) => {
